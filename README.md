@@ -2,6 +2,7 @@
 
 ## Feature List
 
+- Added Splash screen using splash screen api
 - Added Hilt
 - Extensions in helper/Extensions
 - Retrofit
