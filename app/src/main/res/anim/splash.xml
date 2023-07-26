@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shareInterpolator="false">
+
+    <!-- Translate animation for the logo image -->
+<!--    <translate
+        android:duration="1000"
+        android:fromYDelta="100%"
+        android:toYDelta="0%" />-->
+
+    <!-- Alpha animation for the logo image -->
+    <alpha
+        android:duration="1000"
+        android:fromAlpha="0"
+        android:toAlpha="1" />
+
+    <!-- Translate animation for the title text -->
+   <!-- <translate
+        android:duration="1000"
+        android:fromYDelta="100%"
+        android:startOffset="500"
+        android:toYDelta="0%" />-->
+
+    <!-- Alpha animation for the title text -->
+    <alpha
+        android:duration="1000"
+        android:fromAlpha="0"
+        android:startOffset="500"
+        android:toAlpha="1" />
+
+    <!-- Translate animation for the button -->
+<!--    <translate
+        android:duration="1000"
+        android:fromYDelta="100%"
+        android:startOffset="1000"
+        android:toYDelta="0%" />-->
+
+    <!-- Alpha animation for the button -->
+    <alpha
+        android:duration="1000"
+        android:fromAlpha="0"
+        android:startOffset="1000"
+        android:toAlpha="1" />
+
+</set>

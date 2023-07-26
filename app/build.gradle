@@ -1,15 +1,19 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
 }
 
+
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.company.myapplication"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -23,21 +27,117 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+    hilt {
+        enableAggregatingTask = true
+    }
+    flavorDimensions "version"
+    productFlavors {
+        dev {
+            dimension "version"
+            ext.config = getProps('../config/development.properties')
+            signingConfig signingConfigs.debug
+            ext.config.each { p ->
+                if (p.key == "APP_NAME") {
+                    resValue "string", "app_name", p.value
+                } else if (p.key == "APPLICATION_ID_SUFFIX") {
+                    applicationIdSuffix p.value
+                } else
+                    buildConfigField 'String', p.key, p.value
+            }
+        }
+        uat {
+            dimension "version"
+            ext.config = getProps('../config/staging.properties')
+            ext.config.each { p ->
+                if (p.key == "APPNAME") {
+                    resValue "string", "APP_NAME", p.value
+                } else if (p.key == "APPLICATION_ID_SUFFIX") {
+                    applicationIdSuffix p.value
+                } else
+                    buildConfigField 'String', p.key, p.value
+            }
+        }
+        production {
+            dimension "version"
+            ext.config = getProps('../config/production.properties')
+            ext.config.each { p ->
+                if (p.key == "APP_NAME") {
+                    resValue "string", "app_name", p.value
+                } else if (p.key == "APPLICATION_ID_SUFFIX") {
+                    applicationIdSuffix p.value
+                } else
+                    buildConfigField 'String', p.key, p.value
+            }
+        }
+    }
+    namespace 'com.company.myapplication'
 }
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.2.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    //3rd Party
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    // Coroutine Lifecycle Scopes
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
+    implementation "androidx.fragment:fragment-ktx:1.6.0"
+    //Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation('com.github.ihsanbal:LoggingInterceptor:3.1.0') {
+        exclude group: 'org.json', module: 'json'
+    }
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.7'
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
+    //Hilt
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+    implementation "com.squareup:javapoet:1.13.0"
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
+    //Permissions
+    implementation 'com.karumi:dexter:6.2.3'
+    //ssp & sdp
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    implementation 'com.intuit.ssp:ssp-android:1.0.6'
+    //Splash
+    implementation 'androidx.core:core-splashscreen:1.0.1'
+    //PinView
+    implementation'io.github.chaosleung:pinview:1.4.4'
+    //Power Spinner
+    implementation "com.github.skydoves:powerspinner:1.2.1"
+    //Biometric
+    implementation "androidx.biometric:biometric-ktx:1.2.0-alpha05"
+    //swipeRefreshLayout
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+}
+
+def getProps(path) {
+    Properties properties = new Properties()
+    properties.load(new FileInputStream(file(path)))
+    return properties
 }

@@ -3,6 +3,14 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == 'dagger.hilt.android.plugin') {
+                useModule("com.google.dagger:hilt-android-gradle-plugin:2.44")
+            }
+        }
     }
 }
 dependencyResolutionManagement {
@@ -10,6 +18,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://jcenter.bintray.com" }
+        maven { url "https://jitpack.io" }
     }
 }
 rootProject.name = "Android Biolerplate"
