@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.company.myapplication.BuildConfig
+import com.company.myapplication.R
 import com.company.myapplication.presentation.activities.MainActivity
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -86,18 +87,6 @@ fun changeDrawableColor(color: Int, textView: TextView) {
                 )
         }
     }
-}
-
-@SuppressLint("SimpleDateFormat", "NewApi")
-fun getFormatDate(transactedAt: String): String {
-    val instant = Instant.parse(transactedAt)
-    val localDateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC)
-    val timestamp = localDateTime.toInstant(ZoneOffset.UTC).toEpochMilli()
-    val currentTime = System.currentTimeMillis()
-    val timeDifference = currentTime - timestamp
-    val timeAgo =
-        DateUtils.getRelativeTimeSpanString(timestamp, currentTime, DateUtils.MINUTE_IN_MILLIS)
-    return timeAgo.toString()
 }
 
 //Hidden Logout
@@ -235,7 +224,7 @@ private fun saveImage(
 
 @SuppressLint("InlinedApi")
 fun getImageUri(inImage: Bitmap, context: Context): Uri? {
-    val filename = "Bachat_${System.currentTimeMillis()}.png"
+    val filename = "${context.getString(R.string.app_name).replace(" ", "")}_${System.currentTimeMillis()}.png"
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         val contentValues = ContentValues().apply {

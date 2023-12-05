@@ -42,7 +42,7 @@ fun EditText.showKeyboard(activity: Activity) {
     this.requestFocus()
     activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
     val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-    imm!!.showSoftInput(this, InputMethodManager.SHOW_FORCED)
+    imm?.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
 }
 
 
